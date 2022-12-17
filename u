@@ -1,0 +1,201 @@
+#!/bin/bash
+# 
+# Arch Linux update script
+# Options:
+# Define an aur helper
+aurh="paru"
+
+# Define if you want notifications (doesnt include errors)
+notifyonstepcomplete="1" 
+
+# Define if you want to build an init image
+# 0 = dont build an image
+# 1 = automatically build an image
+# 2 = ask everytime
+initimage="2"
+
+# Define a command for building an image
+cmdgenimg="sudo mkinitcpio -p linux"
+
+# Enable/Disable ntp system time update 
+# Depends on ntp package
+UpdateNTP="1"
+
+# Define an ntp update time server (Default: time.nist.gov)
+NTPserver="time.nist.gov"
+
+# CONFIG_END
+# 
+#
+
+function Uconfig(){
+which u 2>/dev/null >/dev/null && ufip="1" || ufip="0" 
+[[ $ufip = "0" ]] && printf "\e[1;32m%-6s\e[m\n" " script is not in your path"
+[[ $ufip = "1" ]] && $EDITOR $(which u)
+exit 1
+}
+
+function helpmenu(){
+echo "u - Arch Linux update shell script"
+echo "Script can be configured by editing the source."
+echo "If you have added this script to your PATH use -c"
+echo "Options:"
+echo "-c	opens the script in $EDITOR"
+echo "-h	this message"
+echo "-s	forces the init image generation, adds '--noconfirm' and shuts down the system (unless update errors out)"
+echo "-r	forces the init image generation, adds '--noconfirm' and reboots the system (unless update errors out)"
+echo "Current settings:"
+echo "aurh=$aurh"
+echo "notifyonstepcomplete=$notifyonstepcomplete"
+echo "initimage=$initimage"
+echo "cmdgenimg=$cmdgenimg"
+echo "UpdateNTP=$UpdateNTP"
+echo "NTPserver=$NTPserver"
+exit 1
+}
+
+function noroot(){
+errnr="
+need sudo permissions
+"
+notify-send "$errnr"
+printf "\e[1;31m%-6s\e[m\n" "$errnr"
+notify-send "$errnr"
+}
+
+function yroot(){
+yrt="sudo permission granted"
+printf '\e[1;32m%-6s\e[m\n' "$yrt"
+Umain
+}
+
+function ntptimeupdate(){
+if [[ $UpdateNTP = "1" ]];then
+echo "Current OS time: $(date)"
+printf "\e[1;32m%-6s\e[m\n" "NTP-server: $NTPserver"
+sudo ntpdate -s $NTPserver && stepcomplete NTP Update || Stop ntp
+echo "Hardware clock: $(sudo hwclock -u)"
+echo "Updated OS time: $(date)"
+else
+printf "\e[1;32m%-6s\e[m\n" "Skiping over ntp time update ..."
+fi
+}
+
+function mlocale(){
+printf "\e[1;34m%-6s\e[m\n" "Updating mlocale database..."
+sudo updatedb && stepcomplete mlocale || Stop mlocale
+}
+
+function checkmlocale(){
+#checks for the mlocale package utils
+which locate || nml=1
+which updatedb || nml=1
+if [[ $nml = "1" ]];then
+printf "\e[1;31m%-6s\e[m\n" "mlocale not found, skiping..." 
+else
+mlocale
+fi
+}
+
+function Stop(){
+stp="$1 errored out. Stoping update ..."
+notify-send "$stp" & disown
+printf "\e[1;33m%-6s\e[m\n" "$stp"
+kill $$ &
+}
+
+function stepcomplete(){
+sct="$* process complete, moving on ..."
+if [[ $notifyonstepcomplete = 1 ]];then
+notify-send "$sct"
+fi
+printf "\e[1;34m%-6s\e[m\n" "$sct"
+}
+
+function GenImage(){
+genit="Starting Init Image Generation ..."
+printf "\e[1;34m%-6s\e[m\n" "$genit"
+notify-send "$genit"
+sh -c "$cmdgenimg" && stepcomplete init image generation || Stop Image Generation
+}
+
+function GenImageAsk(){
+skpimg="Skiping over init image generation"
+if [[ $initimage = "1" ]];then
+GenImage
+fi
+if [[ $initimage = "2" ]];then
+read -p "Do you want to generate an init image? [y/n]: " gimga
+if [[ $gimga = "y" ]];then
+GenImage
+else
+printf "\e[1;34m%-6s\e[m\n" "$skpimg"
+fi
+fi
+if [[ $initimage = "0" ]];then
+printf "\e[1;34m%-6s\e[m\n" "$skpimg"
+fi
+}
+
+function Umain(){
+rut="Running Update ..."
+printf "\e[1;34m%-6s\e[m\n" "$rut"
+notify-send "$rut"
+ntptimeupdate
+sudo pacman -Syu $noconfirm && stepcomplete Pacman || Stop Pacman
+$aurh -Syu $noconfirm && stepcomplete $aurh || Stop $aurh
+checkmlocale
+stepcomplete Update
+GenImageAsk
+sh -c "$SRFv"
+echo " Done."
+}
+
+function SF(){
+initimage="1"
+SFT="System is set to shutdown 10 seconds after update.
+
+Image Generation is Forced.
+"
+notify-send "$SFT"
+printf "\e[1;31m%-6s\e[m\n" "$SFT"
+SRFv='echo "Shutdown in 10 seconds ..." && sleep 10 && systemctl poweroff'
+noconfirm="--noconfirm"
+}
+
+function SR(){
+initimage="1"
+SRT="System is set to reboot 10 seconds after update.
+
+Image Generation is Forced.
+"
+notify-send "$SRT"
+printf "\e[1;31m%-6s\e[m\n" "$SRT"
+SRFv='echo "Reboot in 10 seconds ..." && sleep 10 && systemctl reboot'
+noconfirm="--noconfirm"
+}
+
+while getopts 'chsr' FLAGS >/dev/null ; do
+case "$FLAGS" in
+	c)
+		Uconfig
+		;;
+	h)
+		helpmenu
+		;;
+	s)
+		SF
+		;;
+	r)
+		SR
+		;;
+	?)
+	echo " "
+	helpmenu
+	exit 1
+	;;
+esac
+done
+
+sudo printf "" && yroot || noroot
+
