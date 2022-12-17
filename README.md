@@ -3,6 +3,10 @@ Simple Arch Linux update script aur/pacman/mlocale database/ntp
 
 ## Options:
 
+ `-h`                                      help message
+ 
+ `-c`                                      opens a config in $EDITOR
+
  `-s`                                      shutdown the system after update
  
  `-r`                                      reboot the system after update
