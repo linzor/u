@@ -3,20 +3,20 @@ Simple Arch Linux update script aur/pacman/mlocale database/ntp
 
 ## Options:
 
- -s                                      shutdown the system after update
+ `-s`                                      shutdown the system after update
  
- -r                                      reboot the system after update
+ `-r`                                      reboot the system after update
 
 ## Config:
 
- aurh=aurhelper                          Defines an aur helper
+ `aurh=aurhelper`                          Defines an aur helper
  
- notifyonstepcomplete=1                  Sends desktop notifications 
+ `notifyonstepcomplete=1`                  Sends desktop notifications 
  
- initimage=2                             Skips/Asks or Forces an init image generation
+ `initimage=2`                             Skips/Asks or Forces an init image generation
  
- cmdgenimg=sudo mkinitcpio -p linux      Defines the image generation command
+ `cmdgenimg=sudo mkinitcpio -p linux`      Defines the image generation command
  
- UpdateNTP=1                             Disables/Enables ntp time updates
+ `UpdateNTP=1`                             Disables/Enables ntp time updates
  
- NTPserver=time.nist.gov                 Defines an NTP server
+ `NTPserver=time.nist.gov`                 Defines an NTP server
