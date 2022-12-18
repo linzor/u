@@ -1,6 +1,6 @@
 #!/bin/bash
 # https://github.com/linzor/u 
-# Arch Linux update script
+# Arch Linux update script v1.0
 # Options:
 # Define an aur helper
 aurh="paru"
