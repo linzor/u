@@ -24,3 +24,6 @@ Simple Arch Linux update script aur/pacman/mlocale database/ntp
  `UpdateNTP=1`                             Disables/Enables ntp time updates
  
  `NTPserver=time.nist.gov`                 Defines an NTP server
+ 
+ `NTPregion="europe"`                      Defines prefered ntp servers region (in case your default doesnt work)
+
