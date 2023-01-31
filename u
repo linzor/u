@@ -22,7 +22,7 @@ cmdgenimg="sudo mkinitcpio -p linux"
 UpdateNTP="1"
 
 # Define an ntp update time server (Default: time.nist.gov)
-NTPserver="time.nist.gov"
+NTPserver="ua.pool.ntp.org"
 
 # Define prefered ntp servers region (in case your default doesnt work)
 NTPregion="europe"
@@ -47,6 +47,7 @@ echo "-c	opens the script in $EDITOR"
 echo "-h	this message"
 echo "-s	forces the init image generation, adds '--noconfirm' and shuts down the system (unless update errors out)"
 echo "-r	forces the init image generation, adds '--noconfirm' and reboots the system (unless update errors out)"
+echo "-f	direct call function from script"
 echo "
 Current settings:"
 echo "aurh=$aurh"
@@ -57,6 +58,10 @@ echo "UpdateNTP=$UpdateNTP"
 echo "NTPserver=$NTPserver"
 echo "NTPregion=$NTPregion"
 exit 1
+}
+
+function directcallfunc(){
+$*
 }
 
 function noroot(){
@@ -95,6 +100,7 @@ printf "\e[1;32m%-6s\e[m\n" "New NTP Server: $NTPserver"
 else
 nss_count="$(expr $nss_count + 1)"
 echo "Checking server: $NTPserver ($nss_count)"
+sleep 1
 if [[ "$nss_count" = "10" ]];then
 Stop ntpswitchserver
 else
@@ -233,7 +239,7 @@ SRFv='notify-send -a "u.sh" "Reboot in 10 seconds ..." ; echo "Reboot in 10 seco
 noconfirm="--noconfirm"
 }
 
-while getopts 'chsr' FLAGS >/dev/null ; do
+while getopts 'chsrf' FLAGS >/dev/null ; do
 case "$FLAGS" in
 	c)
 		Uconfig
@@ -247,10 +253,14 @@ case "$FLAGS" in
 	r)
 		SR
 		;;
+	f)
+		directcallfunc $2 $3 $4 $5 $6 $7 $8 $9
+		exit 1
+		Stop callfunc
+		;;
 	?)
 	echo " "
 	helpmenu
-	exit 1
 	;;
 esac
 done
