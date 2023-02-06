@@ -10,7 +10,9 @@ Simple Arch Linux update script aur/pacman/mlocale database/ntp
  `-s`                                      shutdown the system after update
  
  `-r`                                      reboot the system after update
-
+ 
+ `-f`                                      allows you to directly call a function from the script (example: ./u.sh -f ntpgetserverlist)
+ 
 ## Config:
 
  `aurh=aurhelper`                          Defines an aur helper
@@ -23,7 +25,7 @@ Simple Arch Linux update script aur/pacman/mlocale database/ntp
  
  `UpdateNTP=1`                             Disables/Enables ntp time updates
  
- `NTPserver=time.nist.gov`                 Defines an NTP server
+ `NTPserver=time.nist.gov`                 Defines an ntp server
  
- `NTPregion="europe"`                      Defines prefered ntp servers region (in case your default doesnt work)
-
+ `NTPregion="europe"`                      Defines prefered ntp servers region (in case your default doesn't work)
+  `NTPFindNewServer="1"`                   Defines if you want to look for a new ntp server (in case your default doesn't work)
