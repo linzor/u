@@ -28,4 +28,5 @@ Simple Arch Linux update script aur/pacman/mlocale database/ntp
  `NTPserver=time.nist.gov`                 Defines an ntp server
  
  `NTPregion="europe"`                      Defines prefered ntp servers region (in case your default doesn't work)
+ 
   `NTPFindNewServer="1"`                   Defines if you want to look for a new ntp server (in case your default doesn't work)
