@@ -76,7 +76,6 @@ need sudo permissions
 "
 notify-send -a "u.sh" "$errnr"
 printf "\e[1;31m%-6s\e[m\n" "$errnr"
-notify-send "$errnr"
 }
 
 function yroot(){
