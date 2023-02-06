@@ -1,6 +1,6 @@
 #!/bin/bash
 # https://github.com/linzor/u 
-# Arch Linux update script v1.1
+# Arch Linux update script v1.2
 
 # Options:
 
@@ -52,7 +52,7 @@ echo "-c	opens the script in $EDITOR"
 echo "-h	this message"
 echo "-s	forces the init image generation, adds '--noconfirm' and shuts down the system (unless update errors out)"
 echo "-r	forces the init image generation, adds '--noconfirm' and reboots the system (unless update errors out)"
-echo "-f	direct call function from script (example: ./u.sh -f ntpgetserverlist)"
+echo "-f	allows you to directly call a function from the script (example: ./u.sh -f ntpgetserverlist)"
 echo "
 Current settings:"
 echo "aurh=$aurh"
@@ -266,7 +266,6 @@ case "$FLAGS" in
 	f)
 		directcallfunc $2 $3 $4 $5 $6 $7 $8 $9
 		exit 1
-		Stop callfunc
 		;;
 	?)
 	echo " "
