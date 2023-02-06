@@ -234,7 +234,7 @@ Image Generation is Forced.
 "
 notify-send -a "u.sh" "$SFT"
 printf "\e[1;31m%-6s\e[m\n" "$SFT"
-SRFv='notify-send -a "u.sh" "Shutdown in 10 seconds ..." ; echo "Shutdown in 10 seconds ..." && sleep 9 && notify-send -a "static2" "bye bye <3" && sleep 1 && systemctl poweroff'
+SRFv='notify-send -a "u.sh" "Shutdown in 10 seconds ..." ; echo "Shutdown in 10 seconds ..." && sleep 9 && notify-send -a "u.sh" "bye bye <3" && sleep 1 && systemctl poweroff'
 noconfirm="--noconfirm"
 }
 
