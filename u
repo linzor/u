@@ -22,7 +22,7 @@ cmdgenimg="sudo mkinitcpio -p linux"
 UpdateNTP="1"
 
 # Define an ntp update time server (Default: time.nist.gov)
-NTPserver="ua.pool.ntp.org"
+NTPserver="rggeegr.rg.gr"
 
 # Define prefered ntp servers region (in case your default doesnt work)
 NTPregion="europe"
@@ -47,7 +47,7 @@ echo "-c	opens the script in $EDITOR"
 echo "-h	this message"
 echo "-s	forces the init image generation, adds '--noconfirm' and shuts down the system (unless update errors out)"
 echo "-r	forces the init image generation, adds '--noconfirm' and reboots the system (unless update errors out)"
-echo "-f	direct call function from script"
+echo "-f	direct call function from script (example: ./u.sh -f ntpgetserverlist)"
 echo "
 Current settings:"
 echo "aurh=$aurh"
