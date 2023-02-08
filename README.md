@@ -19,7 +19,7 @@ Simple & responsive Arch Linux update script with notifications (aur / pacman / 
  
  `notifyonstepcomplete=1`                  Sends desktop notifications 
  
- `initimage=2`                             Skips/Asks or Forces an init image generation
+ `initimage=2`                             Skips/Forces or Asks about an init image generation
  
  `cmdgenimg=sudo mkinitcpio -p linux`      Defines the image generation command
  
