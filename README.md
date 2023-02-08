@@ -1,5 +1,5 @@
 # u
-Simple Arch Linux update script aur/pacman/mlocale database/ntp
+Simple & responsive Arch Linux update script with notifications aur / pacman / mlocale database / ntp
 
 ## Options:
 
